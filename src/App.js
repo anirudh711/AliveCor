@@ -6,7 +6,7 @@ import PatientDetailScreen from "./screens/PatientDetailScreen/PatientDetailScre
 function App() {
   return (
     <div>
-      <Router>
+      <Router basename="/AliveCor">
         <Route path="/" component={LandingScreen} exact />
         <Route path="/patients" component={PatientLisingScreen} exact />
         <Route path="/patients/:id" component={PatientDetailScreen} exact />
