@@ -20,9 +20,21 @@ const EditPatient = (props) => {
   //destructuring props
   const { type, data: existingPatientData } = props;
   //states to handle inputs
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState(null);
+  const [firstName, setFirstName] = useState({
+    value: "",
+    isValid: true,
+    message: "Please check your First Name for special characters",
+  });
+  const [lastName, setLastName] = useState({
+    value: "",
+    isValid: true,
+    message: "Please check your Last Name for special characters",
+  });
+  const [phone, setPhone] = useState({
+    value: "",
+    isValid: true,
+    message: "Please check your Phone Number. It must be 10 digits",
+  });
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [countryList, setCountryList] = useState([]);
@@ -43,9 +55,9 @@ const EditPatient = (props) => {
 
   //if data is existing in props
   const populateData = (data) => {
-    setFirstName(data.firstName);
-    setLastName(data.lastName);
-    setPhone(data.phone);
+    setFirstName({ ...firstName, value: data.firstName });
+    setLastName({ ...lastName, value: data.lastName });
+    setPhone({ ...phone, value: data.phone });
     setEmail(data.email);
     setStreet(data.street);
     setPinCode(data.pinCode);
@@ -60,34 +72,36 @@ const EditPatient = (props) => {
     setCountryList(countryData);
   };
   //validating phone number
-  const validatePhoneNumber = (phone) => {
-    phone = phone.replace(/[^0-9]/g, "");
-    if (phone.length > 10) {
-      alert("Phone number cannot be more than ten digits");
-    } else {
-      setPhone(phone);
-    }
+  const validatePhoneNumber = (value) => {
+    value.replace(/[^0-9]/g, "").length < 10 ||
+    value.replace(/[^0-9]/g, "").length > 10
+      ? setPhone({ ...phone, value: value, isValid: false })
+      : setPhone({ ...phone, value: value, isValid: true });
   };
-  const validateName = (string) => {
+  //validating name
+  const validateName = (string, name) => {
     var regex = /[^A-Z a-z0-9]/g;
-    return !regex.test(string);
+    if (name == "first") {
+      regex.test(string)
+        ? (setFirstName({ ...firstName, isValid: false }) )
+        : setFirstName({ ...firstName, value: string, isValid: true });
+    } else {
+      regex.test(string)
+        ? setLastName({ ...lastName, isValid: false })
+        : setLastName({ ...lastName, value: string, isValid: true });
+    }
   };
 
   //global submit handler
   const submitHandler = (e) => {
     //stopping event propogation to reload the page
     e.preventDefault();
-    if (
-      validateName(firstName) &&
-      validateName(lastName) &&
-      phone.replace(/[^0-9]/g, "").length === 10 &&
-      country !== ""
-    ) {
+  
       const data = {
-        firstName,
-        lastName,
+        firstName:firstName.value,
+        lastName:lastName.value,
         email,
-        phone,
+        phone: phone.value,
         country,
         street,
         pinCode,
@@ -98,17 +112,7 @@ const EditPatient = (props) => {
       //cleanup
       clearInputs();
       props.onHide();
-    } else {
-      
-      //checking the kind of validation to give alerts to the user
-      if (phone.replace(/[^0-9]/g, "").length < 10) {
-        alert("Please check your phone number");
-      } else if (!validateName(firstName) || !validateName(lastName)) {
-        alert("No special characters allowed!");
-      } else {
-        alert("Please check your details and try again");
-      }
-    }
+    
   };
   useEffect(() => {
     countryList.length === 0 && fetchCountries();
@@ -137,24 +141,34 @@ const EditPatient = (props) => {
         <Modal.Body>
           <Form onSubmit={submitHandler}>
             <Form.Group className="mb-3" controlId="firstName">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>First Name  {!firstName.isValid && (
+                  <span className={styles.alert}>* {firstName.message}</span>
+                )}</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter First Name"
                 maxLength="20"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={firstName.value}
+                onChange={(e) =>
+                  setFirstName({ ...firstName, value: e.target.value })
+                }
+                onBlur={(e) => validateName(e.target.value, "first")}
                 required
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="lastName">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>Last Name {!lastName.isValid && (
+                  <span className={styles.alert}>* {lastName.message}</span>
+                )}</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Last Name"
                 maxLength="20"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={lastName.value}
+                onChange={(e) =>
+                  setLastName({ ...lastName, value: e.target.value })
+                }
+                onBlur={(e) => validateName(e.target.value, "last")}
                 required
               />
             </Form.Group>
@@ -209,9 +223,11 @@ const EditPatient = (props) => {
                 </Col>
               </Row>
             </Form.Group>
-            <label htmlFor="basic-url">Phone Number</label>
+            <label htmlFor="basic-url">Phone Number   {!phone.isValid && (
+                <span className={styles.alert}>* {phone.message}</span>
+              )}</label>
             <InputGroup className="mb-3">
-              <InputGroup.Prepend>
+              <InputGroup.Prepend style={{marginTop:'5px'}}>
                 {country && (
                   <InputGroup.Text id="basic-addon1">
                     +{country.code}
@@ -219,15 +235,16 @@ const EditPatient = (props) => {
                 )}
               </InputGroup.Prepend>
               <FormControl
+              style={{marginTop:'5px'}}
                 type="number"
                 placeholder="Enter Phone Number"
-                value={phone}
+                value={phone.value}
                 onChange={(e) => validatePhoneNumber(e.target.value)}
                 maxLength="10"
                 required
               />
             </InputGroup>
-            <CustomButton type="submit">
+            <CustomButton type="submit"  disabled={!country || !firstName.isValid || !lastName.isValid || !phone.isValid}>
               {type === modalConstants.EDIT ? "Save Changes" : "Submit"}
             </CustomButton>
           </Form>

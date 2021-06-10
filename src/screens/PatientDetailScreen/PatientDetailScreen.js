@@ -24,20 +24,33 @@ const PatientDetailScreen = (props) => {
   let { data: patientsData } = useSelector((state) => state.patientData);
 
   //states to handle inputs
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState(null);
-  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState({
+    value: "",
+    isValid: true,
+    message: "Please check your First Name for special characters",
+  });
+  const [lastName, setLastName] = useState({
+    value: "",
+    isValid: true,
+    message: "Please check your Last Name for special characters",
+  });
+  const [phone, setPhone] = useState({
+    value: "",
+    isValid: true,
+    message: "Please check your Phone Number.It must be 10 digits",
+  });
+  const [email, setEmail] = useState('');
   const [country, setCountry] = useState("");
   const [countryList, setCountryList] = useState([]);
   const [street, setStreet] = useState("");
   const [pinCode, setPinCode] = useState("");
 
+
   //if data is existing in props
   const populateData = (data) => {
-    setFirstName(data.firstName);
-    setLastName(data.lastName);
-    setPhone(data.phone);
+    setFirstName({ ...firstName, value: data.firstName });
+    setLastName({ ...lastName, value: data.lastName });
+    setPhone({ ...phone, value: data.phone });
     setEmail(data.email);
     setStreet(data.street);
     setPinCode(data.pinCode);
@@ -52,18 +65,24 @@ const PatientDetailScreen = (props) => {
     setCountryList(countryData);
   };
   //validating phone number
-  const validatePhoneNumber = (phone) => {
-    phone = phone.replace(/[^0-9]/g, "");
-    if (phone.length > 10) {
-      alert("Phone number cannot be more than ten digits");
-    } else {
-      setPhone(phone);
-    }
+  const validatePhoneNumber = (value) => {
+    value.replace(/[^0-9]/g, "").length < 10 ||
+    value.replace(/[^0-9]/g, "").length > 10
+      ? setPhone({ ...phone, value: value, isValid: false })
+      : setPhone({ ...phone, value: value, isValid: true });
   };
   //validating name
-  const validateName = (string) => {
+  const validateName = (string, name) => {
     var regex = /[^A-Z a-z0-9]/g;
-    return !regex.test(string);
+    if (name == "first") {
+      regex.test(string)
+        ? (setFirstName({ ...firstName, isValid: false }) )
+        : setFirstName({ ...firstName, value: string, isValid: true });
+    } else {
+      regex.test(string)
+        ? setLastName({ ...lastName, isValid: false })
+        : setLastName({ ...lastName, value: string, isValid: true });
+    }
   };
 
   //populating patient data after fetching from state
@@ -81,33 +100,21 @@ const PatientDetailScreen = (props) => {
   const submitHandler = (e) => {
     //stopping event propogation to reload the page
     e.preventDefault();
-    if (
-      validateName(firstName) &&
-      validateName(lastName) &&
-      phone.replace(/[^0-9]/g, "").length === 10
-    ) {
+    
       const dataToSave = {
-        firstName,
-        lastName,
+        firstName:firstName.value,
+        lastName:lastName.value,
         email,
-        phone,
+        phone: phone.value,
         country,
         street,
         pinCode,
       };
       dispatch(editPatient(dataToSave, patientId));
       history.push("/patients");
-    } else {
-      //checking the kind of validation to give alerts to the user
-      if (phone.replace(/[^0-9]/g, "").length < 10) {
-        alert("Please check your phone number");
-      } else if (!validateName(firstName)) {
-        alert("No special characters allowed!");
-      } else {
-        alert("Please check your details and try again");
-      }
-    }
+    
   };
+  console.log(phone);
   return (
     <>
       <CustomNavbar history={props.history} />
@@ -131,33 +138,49 @@ const PatientDetailScreen = (props) => {
         </Row>
         <Row className={styles.header}>
           <Col>
-            <h3 className={styles.title}>{firstName}'s Details</h3>
+            <h3 className={styles.title}>{firstName.value}'s Details</h3>
           </Col>
         </Row>
         <Row>
           <Col>
             <Form onSubmit={submitHandler} className={styles.formContainer}>
               <Form.Group className="mb-3" controlId="firstName">
-                <Form.Label>First Name</Form.Label>
+                <Form.Label>
+                  First Name
+                  {!firstName.isValid && (
+                  <span className={styles.alert}>* {firstName.message}</span>
+                )}
+                </Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter First Name"
                   maxLength="20"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName.value}
+                  onChange={(e) =>
+                    setFirstName({ ...firstName, value: e.target.value })
+                  }
+                  onBlur={(e) => validateName(e.target.value, "first")}
                   required
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="lastName">
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>Last Name
+                {!lastName.isValid && (
+                  <span className={styles.alert}>* {lastName.message}</span>
+                )}
+                </Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Last Name"
                   maxLength="20"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName.value}
+                  onChange={(e) =>
+                    setLastName({ ...lastName, value: e.target.value })
+                  }
+                  onBlur={(e) => validateName(e.target.value, "last")}
                   required
                 />
+                
               </Form.Group>
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email address</Form.Label>
@@ -209,9 +232,12 @@ const PatientDetailScreen = (props) => {
                   </Col>
                 </Row>
               </Form.Group>
-              <label htmlFor="basic-url">Phone Number</label>
+              <label htmlFor="basic-url">Phone Number
+              {!phone.isValid && (
+                <span className={styles.alert}>* {phone.message}</span>
+              )}</label>
               <InputGroup className="mb-3">
-                <InputGroup.Prepend>
+                <InputGroup.Prepend style={{marginTop:'5px'}}>
                   {country && (
                     <InputGroup.Text id="basic-addon1">
                       +{country.code}
@@ -219,17 +245,20 @@ const PatientDetailScreen = (props) => {
                   )}
                 </InputGroup.Prepend>
                 <FormControl
+                style={{marginTop:'5px'}}
                   type="number"
                   placeholder="Enter Phone Number"
                   maxLength="10"
-                  value={phone}
+                  value={phone.value}
+                  // onChange={(e)=>setPhone({...phone,isValid:true})
                   onChange={(e) => validatePhoneNumber(e.target.value)}
                   required
                 />
               </InputGroup>
+             
               <Form.Group>
                 <div className={styles.buttonGroup}>
-                  <CustomButton type="submit">{"Save Changes"}</CustomButton>
+                  <CustomButton type="submit" disabled={!firstName.isValid || !lastName.isValid || !phone.isValid}>{"Save Changes"}</CustomButton>
                   <CustomButton
                     style={{ backgroundColor: "#CB4C4E", border: "none" }}
                     onClick={() => {

@@ -28,3 +28,9 @@
     display: flex;
     justify-content: space-between;
 }
+
+.alert{
+    color:#CB4C4E;
+    font-size: 14px;
+   margin-left: 10px;
+}
