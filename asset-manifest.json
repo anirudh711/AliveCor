@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/AliveCor/static/css/main.af38fec5.chunk.css",
+    "main.js": "/AliveCor/static/js/main.7c80234a.chunk.js",
+    "main.js.map": "/AliveCor/static/js/main.7c80234a.chunk.js.map",
+    "runtime-main.js": "/AliveCor/static/js/runtime-main.8c0a5c0e.js",
+    "runtime-main.js.map": "/AliveCor/static/js/runtime-main.8c0a5c0e.js.map",
+    "static/css/2.61b4cb56.chunk.css": "/AliveCor/static/css/2.61b4cb56.chunk.css",
+    "static/js/2.743ae5b5.chunk.js": "/AliveCor/static/js/2.743ae5b5.chunk.js",
+    "static/js/2.743ae5b5.chunk.js.map": "/AliveCor/static/js/2.743ae5b5.chunk.js.map",
+    "index.html": "/AliveCor/index.html",
+    "static/css/2.61b4cb56.chunk.css.map": "/AliveCor/static/css/2.61b4cb56.chunk.css.map",
+    "static/css/main.af38fec5.chunk.css.map": "/AliveCor/static/css/main.af38fec5.chunk.css.map",
+    "static/js/2.743ae5b5.chunk.js.LICENSE.txt": "/AliveCor/static/js/2.743ae5b5.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8c0a5c0e.js",
+    "static/css/2.61b4cb56.chunk.css",
+    "static/js/2.743ae5b5.chunk.js",
+    "static/css/main.af38fec5.chunk.css",
+    "static/js/main.7c80234a.chunk.js"
+  ]
+}
