@@ -2,22 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Col, Container, Form, Row, Table } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import styles from "./styles.module.css";
+import styles from "./patientListing.module.css";
 import { modalConstants } from "../../constants/modalConstants";
 import EditPatient from "../../components/EditPatientModal/EditPatient";
 import CustomNavbar from "../../components/CustomNavbar/CustomNavbar";
 const PatientLisingScreen = (props) => {
+  //usage of history to navigate between pages
   let history = useHistory();
   const [searchText, setSearchText] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState({});
   const [filteredData, setFilteredtData] = useState([]);
+
+  //cherry-picking from glbal state (redux)
   let { data } = useSelector((state) => state.patientData);
-  console.log(data);
+
+  //this opens up a modal on click of a table row
   const editPatientModalHandler = (patientData) => {
     setSelectedPatient(patientData);
     setModalShow(true);
   };
+  //global filter handler
   const filterHandler = (searchInput) => {
     let filteredData = data.filter(
       (value) =>
@@ -31,12 +36,12 @@ const PatientLisingScreen = (props) => {
     );
     return filteredData;
   };
-
+  //checking if there is any change in searchText to filter data
   useEffect(() => {
-    console.log('data')
-    searchText===""?setFilteredtData(data):setFilteredtData(filterHandler(searchText));
+    searchText === ""
+      ? setFilteredtData(data)
+      : setFilteredtData(filterHandler(searchText));
   }, [searchText, data]);
-  console.log(filteredData);
   return (
     <>
       <CustomNavbar history={props.history} />

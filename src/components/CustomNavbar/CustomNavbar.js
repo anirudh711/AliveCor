@@ -8,8 +8,11 @@ import styles from "./navbar.module.css";
 
 import { userLogout } from "../../actions/userActions";
 const CustomNavbar = () => {
+  //dispatch actions to reducer
   const dispatch = useDispatch();
+  //using history navigate between pages
   let history = useHistory();
+  //state to handle modal visibility
   const [modalShow, setModalShow] = React.useState(false);
   return (
     <Navbar className={styles.container}>
@@ -18,8 +21,7 @@ const CustomNavbar = () => {
       </Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse className={styles.buttonGroup}>
-      <Form>
-</Form>
+        <Form></Form>
         <Navbar.Text
           onClick={() => setModalShow(true)}
           className={styles.addButton}

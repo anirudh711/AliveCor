@@ -6,20 +6,27 @@ import styles from "./landingScreen.module.css";
 import { useHistory } from "react-router-dom";
 import { userLogout } from "../../actions/userActions";
 const LandingScreen = () => {
-  const dispatch=useDispatch();
+  //to dispatch actions to reducers
+  const dispatch = useDispatch();
+  //using history to navigate between pages
   let history = useHistory();
 
+  //page states
   const [userName, setUserName] = useState("");
   const [loggedUser, setLoggedUser] = useState("");
+
+  //submit handler for login
   const submitHandler = (e) => {
     e.preventDefault();
     localStorage.setItem("User", JSON.stringify({ userName }));
     history.push("/patients");
   };
+  //generic logout handler
   const logoutHandler = () => {
-    dispatch(userLogout(history))
+    dispatch(userLogout(history));
     setLoggedUser("");
   };
+  //checking if user is already logged in
   useEffect(() => {
     let userData = JSON.parse(localStorage.getItem("User"));
     if (userData) {
@@ -52,7 +59,9 @@ const LandingScreen = () => {
                       onChange={(e) => setUserName(e.target.value)}
                     />
                   </Form.Group>
-                  <CustomButton type="submit" disabled={userName===''}>Continue</CustomButton>
+                  <CustomButton type="submit" disabled={userName === ""}>
+                    Continue
+                  </CustomButton>
                 </>
               ) : (
                 <>

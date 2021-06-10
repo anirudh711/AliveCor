@@ -10,13 +10,14 @@ import {
   InputGroup,
   FormControl,
 } from "react-bootstrap";
-import { editPatient, addPatient } from "../../actions/patientActions";
 import styles from "./editPatient.module.css";
+import { editPatient, addPatient } from "../../actions/patientActions";
 import { modalConstants } from "../../constants/modalConstants";
-
 import CustomButton from "../Button/CustomButton";
+
 const EditPatient = (props) => {
   const dispatch = useDispatch();
+  //destructuring props
   const { type, data: existingPatientData } = props;
   //states to handle inputs
   const [firstName, setFirstName] = useState("");
@@ -27,6 +28,8 @@ const EditPatient = (props) => {
   const [countryList, setCountryList] = useState([]);
   const [street, setStreet] = useState("");
   const [pinCode, setPinCode] = useState("");
+
+  //cleanup function
   const clearInputs = () => {
     setFirstName("");
     setLastName("");
@@ -37,6 +40,7 @@ const EditPatient = (props) => {
     setPinCode("");
     setCountry("");
   };
+
   //if data is existing in props
   const populateData = (data) => {
     console.log("populate data");
@@ -56,13 +60,7 @@ const EditPatient = (props) => {
     });
     setCountryList(countryData);
   };
-
-  useEffect(() => {
-    countryList.length === 0 && fetchCountries();
-    if (type === modalConstants.EDIT) {
-      populateData(existingPatientData);
-    }
-  }, [existingPatientData]);
+  //validating phone number
   const validatePhoneNumber = (phone) => {
     phone = phone.replace(/[^0-9]/g, "");
     if (phone.length > 10) {
@@ -71,26 +69,40 @@ const EditPatient = (props) => {
       setPhone(phone);
     }
   };
+
   //global submit handler
   const submitHandler = (e) => {
     //stopping event propogation to reload the page
     e.preventDefault();
-    const data = {
-      firstName,
-      lastName,
-      email,
-      phone,
-      country,
-      street,
-      pinCode,
-    };
-    type === modalConstants.EDIT
-      ? dispatch(editPatient(data, existingPatientData.id))
-      : dispatch(addPatient(data));
-    //cleanup
-    clearInputs();
-    props.onHide();
+    if (phone.replace(/[^0-9]/g, "").length === 10 && country !== "") {
+      const data = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        country,
+        street,
+        pinCode,
+      };
+      type === modalConstants.EDIT
+        ? dispatch(editPatient(data, existingPatientData.id))
+        : dispatch(addPatient(data));
+      //cleanup
+      clearInputs();
+      props.onHide();
+    } else if (phone.replace(/[^0-9]/g, "").length < 10) {
+      alert("Please check your details");
+    } else {
+      alert("Please don't leave any fields empty");
+    }
   };
+  useEffect(() => {
+    countryList.length === 0 && fetchCountries();
+    if (type === modalConstants.EDIT) {
+      populateData(existingPatientData);
+    }
+  }, [existingPatientData]);
+
   return (
     <>
       <Modal
@@ -160,6 +172,7 @@ const EditPatient = (props) => {
                         code: c.callingCode,
                       };
                     })}
+                    required
                   />
                 </Col>
                 <Col>
@@ -200,10 +213,7 @@ const EditPatient = (props) => {
                 required
               />
             </InputGroup>
-            <CustomButton
-              type="submit"
-              disabled={phone && phone.replace(/[^0-9]/g, "").length !== 10}
-            >
+            <CustomButton type="submit">
               {type === modalConstants.EDIT ? "Save Changes" : "Submit"}
             </CustomButton>
           </Form>
