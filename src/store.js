@@ -6,9 +6,9 @@ import { userReducer } from "./reducers/userReducer";
 
 const reducer = combineReducers({
   patientData: patientReducer,
-  user:userReducer
+  user: userReducer,
 });
-const initialState = {patientData:{data:[]},user:{}};
+const initialState = { patientData: { data: [] }, user: {} };
 const middleware = [thunk];
 const store = createStore(
   reducer,

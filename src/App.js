@@ -1,12 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import LandingScreen from "./screens/LandingScreen/LandingScreen"
+import LandingScreen from "./screens/LandingScreen/LandingScreen";
 import PatientLisingScreen from "./screens/PatientLisingScreen/PatientListingScreen";
 import PatientDetailScreen from "./screens/PatientDetailScreen/PatientDetailScreen";
 function App() {
   return (
     <div>
-     
       <Router>
         <Route path="/" component={LandingScreen} exact />
         <Route path="/patients" component={PatientLisingScreen} exact />

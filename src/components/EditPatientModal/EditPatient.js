@@ -63,6 +63,14 @@ const EditPatient = (props) => {
       populateData(existingPatientData);
     }
   }, [existingPatientData]);
+  const validatePhoneNumber = (phone) => {
+    phone = phone.replace(/[^0-9]/g, "");
+    if (phone.length > 10) {
+      alert("Phone number cannot be more than ten digits");
+    } else {
+      setPhone(phone);
+    }
+  };
   //global submit handler
   const submitHandler = (e) => {
     //stopping event propogation to reload the page
@@ -184,15 +192,18 @@ const EditPatient = (props) => {
                 )}
               </InputGroup.Prepend>
               <FormControl
-                type="text"
+                type="number"
                 placeholder="Enter Phone Number"
-                maxLength="10"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => validatePhoneNumber(e.target.value)}
+                maxLength="10"
                 required
               />
             </InputGroup>
-            <CustomButton type="submit">
+            <CustomButton
+              type="submit"
+              disabled={phone && phone.replace(/[^0-9]/g, "").length !== 10}
+            >
               {type === modalConstants.EDIT ? "Save Changes" : "Submit"}
             </CustomButton>
           </Form>

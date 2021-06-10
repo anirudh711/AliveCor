@@ -45,7 +45,14 @@ const PatientDetailScreen = (props) => {
       });
       setCountryList(countryData);
     };
-  
+  const validatePhoneNumber = (phone) => {
+    phone = phone.replace(/[^0-9]/g, "");
+    if (phone.length > 10) {
+      alert("Phone number cannot be more than ten digits");
+    } else {
+      setPhone(phone);
+    }
+  };
     useEffect(() => {
       countryList.length === 0 && fetchCountries();
       let index=patientsData.findIndex(d=>d.id===patientId)
@@ -167,7 +174,7 @@ const PatientDetailScreen = (props) => {
                 placeholder="Enter Phone Number"
                 maxLength="10"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => validatePhoneNumber(e.target.value)}
               />
             </InputGroup>
             <Form.Group>
