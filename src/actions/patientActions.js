@@ -12,7 +12,6 @@ export const addPatient = (data) => async (dispatch, getState) => {
   try {
     //cherry picking existing data from the state
     const tableData = getState().patientData.data;
-    console.log(tableData);
     //state to request before api call
     dispatch({
       type: ADD_PATIENT_REQUEST,
@@ -38,7 +37,6 @@ export const addPatient = (data) => async (dispatch, getState) => {
 
 export const editPatient = (data, id) => async (dispatch, getState) => {
   try {
-    console.log(data);
     //cherry picking existing data from the state
     const tableData = getState().patientData.data;
     //state to request before api call

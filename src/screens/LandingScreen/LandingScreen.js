@@ -33,7 +33,6 @@ const LandingScreen = () => {
       setLoggedUser(userData.userName);
     }
   }, [setLoggedUser]);
-  console.log(loggedUser);
   return (
     <Container className={styles.container}>
       <Row>
