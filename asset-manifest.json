@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/AliveCor/static/css/main.186b6816.chunk.css",
-    "main.js": "/AliveCor/static/js/main.fe8c009a.chunk.js",
-    "main.js.map": "/AliveCor/static/js/main.fe8c009a.chunk.js.map",
+    "main.css": "/AliveCor/static/css/main.55413478.chunk.css",
+    "main.js": "/AliveCor/static/js/main.453cfef8.chunk.js",
+    "main.js.map": "/AliveCor/static/js/main.453cfef8.chunk.js.map",
     "runtime-main.js": "/AliveCor/static/js/runtime-main.8c0a5c0e.js",
     "runtime-main.js.map": "/AliveCor/static/js/runtime-main.8c0a5c0e.js.map",
     "static/css/2.61b4cb56.chunk.css": "/AliveCor/static/css/2.61b4cb56.chunk.css",
-    "static/js/2.f2f75055.chunk.js": "/AliveCor/static/js/2.f2f75055.chunk.js",
-    "static/js/2.f2f75055.chunk.js.map": "/AliveCor/static/js/2.f2f75055.chunk.js.map",
+    "static/js/2.35cf7567.chunk.js": "/AliveCor/static/js/2.35cf7567.chunk.js",
+    "static/js/2.35cf7567.chunk.js.map": "/AliveCor/static/js/2.35cf7567.chunk.js.map",
     "index.html": "/AliveCor/index.html",
     "static/css/2.61b4cb56.chunk.css.map": "/AliveCor/static/css/2.61b4cb56.chunk.css.map",
-    "static/css/main.186b6816.chunk.css.map": "/AliveCor/static/css/main.186b6816.chunk.css.map",
-    "static/js/2.f2f75055.chunk.js.LICENSE.txt": "/AliveCor/static/js/2.f2f75055.chunk.js.LICENSE.txt"
+    "static/css/main.55413478.chunk.css.map": "/AliveCor/static/css/main.55413478.chunk.css.map",
+    "static/js/2.35cf7567.chunk.js.LICENSE.txt": "/AliveCor/static/js/2.35cf7567.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.8c0a5c0e.js",
     "static/css/2.61b4cb56.chunk.css",
-    "static/js/2.f2f75055.chunk.js",
-    "static/css/main.186b6816.chunk.css",
-    "static/js/main.fe8c009a.chunk.js"
+    "static/js/2.35cf7567.chunk.js",
+    "static/css/main.55413478.chunk.css",
+    "static/js/main.453cfef8.chunk.js"
   ]
 }
