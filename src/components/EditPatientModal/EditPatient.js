@@ -43,7 +43,6 @@ const EditPatient = (props) => {
 
   //if data is existing in props
   const populateData = (data) => {
-    console.log("populate data");
     setFirstName(data.firstName);
     setLastName(data.lastName);
     setPhone(data.phone);
@@ -69,12 +68,21 @@ const EditPatient = (props) => {
       setPhone(phone);
     }
   };
+  const validateName = (string) => {
+    var regex = /[^A-Z a-z0-9]/g;
+    return !regex.test(string);
+  };
 
   //global submit handler
   const submitHandler = (e) => {
     //stopping event propogation to reload the page
     e.preventDefault();
-    if (phone.replace(/[^0-9]/g, "").length === 10 && country !== "") {
+    if (
+      validateName(firstName) &&
+      validateName(lastName) &&
+      phone.replace(/[^0-9]/g, "").length === 10 &&
+      country !== ""
+    ) {
       const data = {
         firstName,
         lastName,
@@ -90,10 +98,16 @@ const EditPatient = (props) => {
       //cleanup
       clearInputs();
       props.onHide();
-    } else if (phone.replace(/[^0-9]/g, "").length < 10) {
-      alert("Please check your details");
     } else {
-      alert("Please don't leave any fields empty");
+      
+      //checking the kind of validation to give alerts to the user
+      if (phone.replace(/[^0-9]/g, "").length < 10) {
+        alert("Please check your phone number");
+      } else if (!validateName(firstName) || !validateName(lastName)) {
+        alert("No special characters allowed!");
+      } else {
+        alert("Please check your details and try again");
+      }
     }
   };
   useEffect(() => {

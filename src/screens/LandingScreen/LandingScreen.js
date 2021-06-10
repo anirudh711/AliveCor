@@ -72,7 +72,7 @@ const LandingScreen = () => {
                     className={styles.mutedText}
                     onClick={() => logoutHandler()}
                   >
-                    Logout, Start Afresh?
+                    Logout, Start afresh?
                   </p>
                 </>
               )}

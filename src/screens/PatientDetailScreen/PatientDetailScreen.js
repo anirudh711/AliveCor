@@ -35,7 +35,6 @@ const PatientDetailScreen = (props) => {
 
   //if data is existing in props
   const populateData = (data) => {
-    console.log("populate data");
     setFirstName(data.firstName);
     setLastName(data.lastName);
     setPhone(data.phone);
@@ -61,6 +60,12 @@ const PatientDetailScreen = (props) => {
       setPhone(phone);
     }
   };
+  //validating name
+  const validateName = (string) => {
+    var regex = /[^A-Z a-z0-9]/g;
+    return !regex.test(string);
+  };
+
   //populating patient data after fetching from state
   useEffect(() => {
     countryList.length === 0 && fetchCountries();
@@ -76,7 +81,11 @@ const PatientDetailScreen = (props) => {
   const submitHandler = (e) => {
     //stopping event propogation to reload the page
     e.preventDefault();
-    if (phone.replace(/[^0-9]/g, "").length === 10) {
+    if (
+      validateName(firstName) &&
+      validateName(lastName) &&
+      phone.replace(/[^0-9]/g, "").length === 10
+    ) {
       const dataToSave = {
         firstName,
         lastName,
@@ -89,7 +98,14 @@ const PatientDetailScreen = (props) => {
       dispatch(editPatient(dataToSave, patientId));
       history.push("/patients");
     } else {
-      alert("Please check your phone number");
+      //checking the kind of validation to give alerts to the user
+      if (phone.replace(/[^0-9]/g, "").length < 10) {
+        alert("Please check your phone number");
+      } else if (!validateName(firstName)) {
+        alert("No special characters allowed!");
+      } else {
+        alert("Please check your details and try again");
+      }
     }
   };
   return (
@@ -129,6 +145,7 @@ const PatientDetailScreen = (props) => {
                   maxLength="20"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  required
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="lastName">
@@ -139,6 +156,7 @@ const PatientDetailScreen = (props) => {
                   maxLength="20"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  required
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="email">
@@ -148,6 +166,7 @@ const PatientDetailScreen = (props) => {
                   placeholder="Enter Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
                 <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
@@ -176,6 +195,7 @@ const PatientDetailScreen = (props) => {
                       placeholder="Enter Street Name"
                       value={street}
                       onChange={(e) => setStreet(e.target.value)}
+                      required
                     />
                   </Col>
                   <Col>
@@ -184,6 +204,7 @@ const PatientDetailScreen = (props) => {
                       placeholder="Enter Pincode"
                       value={pinCode}
                       onChange={(e) => setPinCode(e.target.value)}
+                      required
                     />
                   </Col>
                 </Row>
@@ -203,6 +224,7 @@ const PatientDetailScreen = (props) => {
                   maxLength="10"
                   value={phone}
                   onChange={(e) => validatePhoneNumber(e.target.value)}
+                  required
                 />
               </InputGroup>
               <Form.Group>

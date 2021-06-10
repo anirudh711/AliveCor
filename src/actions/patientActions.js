@@ -18,6 +18,7 @@ export const addPatient = (data) => async (dispatch, getState) => {
       type: ADD_PATIENT_REQUEST,
     });
     //add data to the existing array of data (supposed to be an api call)
+    //using uuid in order to uniquely identify every patient
     tableData.push({ ...data, id: uuidv4() });
     dispatch({
       type: ADD_PATIENT_SUCCESS,

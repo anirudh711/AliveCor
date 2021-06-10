@@ -9,7 +9,7 @@ export const userLogout = (history) => async (dispatch) => {
       type: USER_LOGOUT,
     });
     window.localStorage.clear();
-    history.push('/')
+    history.push("/");
   } catch (error) {
     console.log(error);
   }
