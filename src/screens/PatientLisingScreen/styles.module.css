@@ -1,0 +1,23 @@
+.container {
+  height: 100%;
+  margin-top: 5vh;
+}
+.header {
+  padding: 0;
+}
+.title {
+  color: #2d9f86;
+}
+.noData {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tableRow {
+  cursor: pointer;
+}
+tr {
+  border-bottom: #2d9f86;
+}
