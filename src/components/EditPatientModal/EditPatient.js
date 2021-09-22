@@ -11,7 +11,7 @@ import {
   FormControl,
 } from "react-bootstrap";
 import styles from "./editPatient.module.css";
-import { editPatient, addPatient } from "../../actions/patientActions";
+// import { editPatient, addPatient } from "../../actions/patientActions";
 import { modalConstants } from "../../constants/modalConstants";
 import CustomButton from "../Button/CustomButton";
 
@@ -107,8 +107,8 @@ const EditPatient = (props) => {
         pinCode,
       };
       type === modalConstants.EDIT
-        ? dispatch(editPatient(data, existingPatientData.id))
-        : dispatch(addPatient(data));
+        ? dispatch(props.editPatient(data, existingPatientData.id))
+        : dispatch(props.addPatient(data));
       //cleanup
       clearInputs();
       props.onHide();

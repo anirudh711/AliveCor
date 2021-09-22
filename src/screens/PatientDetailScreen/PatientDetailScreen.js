@@ -14,7 +14,7 @@ import Select from "react-select";
 import CustomNavbar from "../../components/CustomNavbar/CustomNavbar";
 import styles from "./patientDetail.module.css";
 import CustomButton from "../../components/Button/CustomButton";
-import { deletePatient, editPatient } from "../../actions/patientActions";
+import { addPatient, deletePatient, editPatient } from "../../actions/patientActions";
 const PatientDetailScreen = (props) => {
   const dispatch = useDispatch();
   let history = useHistory();
@@ -117,7 +117,7 @@ const PatientDetailScreen = (props) => {
   console.log(phone);
   return (
     <>
-      <CustomNavbar history={props.history} />
+      <CustomNavbar history={props.history} addPatient={addPatient} />
       <Container className={styles.container}>
         <Row>
           <div

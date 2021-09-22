@@ -1,18 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { patientReducer } from "./reducers/patientReducer";
-import { userReducer } from "./reducers/userReducer";
+import { asyncCombine } from "./reducers";
 
-const reducer = combineReducers({
-  patientData: patientReducer,
-  user: userReducer,
-});
 const initialState = { patientData: { data: [] }, user: {} };
 const middleware = [thunk];
 const store = createStore(
-  reducer,
+  asyncCombine({}),
   initialState,
   composeWithDevTools(applyMiddleware(...middleware))
 );
+store.asyncReducers = {};
 export default store;

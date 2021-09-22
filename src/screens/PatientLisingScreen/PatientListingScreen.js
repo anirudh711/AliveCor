@@ -6,6 +6,8 @@ import styles from "./patientListing.module.css";
 import { modalConstants } from "../../constants/modalConstants";
 import EditPatient from "../../components/EditPatientModal/EditPatient";
 import CustomNavbar from "../../components/CustomNavbar/CustomNavbar";
+
+import { editPatient, addPatient } from "../../actions/patientActions";
 const PatientLisingScreen = (props) => {
   //usage of history to navigate between pages
   let history = useHistory();
@@ -44,7 +46,7 @@ const PatientLisingScreen = (props) => {
   }, [searchText, data]);
   return (
     <>
-      <CustomNavbar history={props.history} />
+      <CustomNavbar history={props.history}  addPatient={addPatient} />
       <Container className={styles.container}>
         <Row className={styles.header}>
           <Col>
@@ -110,6 +112,8 @@ const PatientLisingScreen = (props) => {
           data={selectedPatient}
           show={modalShow}
           onHide={() => setModalShow(false)}
+          editPatient={editPatient}
+          addPatient={addPatient}
         />
       </Container>
     </>

@@ -61,6 +61,9 @@ const LandingScreen = () => {
                   <CustomButton type="submit" disabled={userName === ""}>
                     Continue
                   </CustomButton>
+                  <CustomButton onClick={() => history.push("/ex")}>
+                    Feature
+                  </CustomButton>
                 </>
               ) : (
                 <>
@@ -73,6 +76,7 @@ const LandingScreen = () => {
                   >
                     Logout, Start afresh?
                   </p>
+                 
                 </>
               )}
             </Form>

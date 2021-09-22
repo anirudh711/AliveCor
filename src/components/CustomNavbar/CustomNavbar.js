@@ -7,7 +7,7 @@ import EditPatient from "../EditPatientModal/EditPatient";
 import styles from "./navbar.module.css";
 
 import { userLogout } from "../../actions/userActions";
-const CustomNavbar = () => {
+const CustomNavbar = (props) => {
   //dispatch actions to reducer
   const dispatch = useDispatch();
   //using history navigate between pages
@@ -36,6 +36,7 @@ const CustomNavbar = () => {
         type={modalConstants.CREATE}
         show={modalShow}
         onHide={() => setModalShow(false)}
+        addPatient={props.addPatient}
       />
     </Navbar>
   );
